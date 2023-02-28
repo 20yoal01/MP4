@@ -1,3 +1,4 @@
+package MP4;
 
 public class Point
   {

@@ -1,3 +1,5 @@
+package MP4;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;

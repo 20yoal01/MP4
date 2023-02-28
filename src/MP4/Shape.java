@@ -1,3 +1,5 @@
+package MP4;
+
 import java.awt.Graphics;
 
 public interface Shape
