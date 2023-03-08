@@ -12,12 +12,18 @@ public class ShapeContainer extends JPanel implements Pointable
   private static final long serialVersionUID = 1L;
   private List<Shape>       shapes           = new LinkedList<Shape>();
 
+  public enum ShapeMode
+    {
+	CIRCLE, RECTANGLE;
+    }
+  
   public enum Mode
     {
     INSERT, MOVE, DELETE, MARK, UNMARK, RESIZE
     };
 
   private Mode  mode = Mode.INSERT;
+  private ShapeMode shapeMode = ShapeMode.CIRCLE;
   private Shape selected;
   
   public ShapeContainer()
@@ -28,6 +34,8 @@ public class ShapeContainer extends JPanel implements Pointable
     this.addMouseMotionListener(mouseHandler);
     this.setBackground(Color.white);
     }
+  
+  
   
   public void addShape(Shape shape)
     {
@@ -44,6 +52,8 @@ public class ShapeContainer extends JPanel implements Pointable
 
     }
 
+  
+  
   private void select(Point point)
     {
     for (Shape shape : shapes)
@@ -56,12 +66,22 @@ public class ShapeContainer extends JPanel implements Pointable
       }
     }
 
+  public void shapeMode(ShapeMode shapeMode) {
+	  this.shapeMode = shapeMode;
+  }
+  
   public void pointerDown(Point point)
     {
     if (mode == Mode.INSERT)
       {
-      shapes.add(new Circle(point, Math.random() * 50.0));
-      repaint(); // uppmanar swing att måla om
+    	switch(shapeMode) {
+    		case CIRCLE:
+    			shapes.add(new Circle(point, Math.random() * 50.0));
+    			break;    		case RECTANGLE:
+    			shapes.add(new Rectangle(point, 40, 60));
+    			break;
+    	}
+    	repaint(); // uppmanar swing att måla om
       }
     else if (mode == Mode.MOVE)
       select(point);

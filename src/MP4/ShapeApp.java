@@ -7,6 +7,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import MP4.ShapeContainer.ShapeMode;
+
 public class ShapeApp extends JFrame
   {
   private static final long serialVersionUID = 1L;
@@ -29,8 +31,14 @@ public class ShapeApp extends JFrame
     createMenuItem(menu, "Mark", e -> shapeContainer.setMode(ShapeContainer.Mode.MARK));
     createMenuItem(menu, "Unmark", e -> shapeContainer.setMode(ShapeContainer.Mode.UNMARK));
     createMenuItem(menu, "Resize", e -> shapeContainer.setMode(ShapeContainer.Mode.RESIZE));
+    
+    JMenu shapeMenu = new JMenu("Shapes");
+    createMenuItem(shapeMenu,"Circle", e -> shapeContainer.shapeMode(ShapeMode.CIRCLE));
+    createMenuItem(shapeMenu,"Rectangle", e -> shapeContainer.shapeMode(ShapeMode.RECTANGLE));
+    
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
+    menuBar.add(shapeMenu);
     this.setJMenuBar(menuBar);
     }
   
@@ -40,7 +48,7 @@ public class ShapeApp extends JFrame
     menuItem.addActionListener(listener);
     menu.add(menuItem);
     }
-  
+
   public static void main(String args[])
     {
     new ShapeApp(); // obs egentligen SwingUtilities ...
