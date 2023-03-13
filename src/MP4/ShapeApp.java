@@ -7,6 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import MP4.ModeState.*;
 import MP4.ShapeContainer.ShapeMode;
 
 public class ShapeApp extends JFrame
@@ -25,12 +26,12 @@ public class ShapeApp extends JFrame
   public void createMenue()
     {
     JMenu menu = new JMenu("Modes");
-    createMenuItem(menu, "Insert", e -> shapeContainer.setMode(ShapeContainer.Mode.INSERT));
-    createMenuItem(menu, "Move", e -> shapeContainer.setMode(ShapeContainer.Mode.MOVE));
-    createMenuItem(menu, "Delete", e -> shapeContainer.setMode(ShapeContainer.Mode.DELETE));
-    createMenuItem(menu, "Mark", e -> shapeContainer.setMode(ShapeContainer.Mode.MARK));
-    createMenuItem(menu, "Unmark", e -> shapeContainer.setMode(ShapeContainer.Mode.UNMARK));
-    createMenuItem(menu, "Resize", e -> shapeContainer.setMode(ShapeContainer.Mode.RESIZE));
+    createMenuItem(menu, "Insert", e -> shapeContainer.changeModeState(new InsertMode()));
+    createMenuItem(menu, "Move", e -> shapeContainer.changeModeState(new MoveMode()));
+    createMenuItem(menu, "Delete", e -> shapeContainer.changeModeState(new DeleteMode()));
+    createMenuItem(menu, "Mark", e -> shapeContainer.changeModeState(new MarkMode()));
+    createMenuItem(menu, "Unmark", e -> shapeContainer.changeModeState(new UnmarkMode()));
+    createMenuItem(menu, "Resize", e -> shapeContainer.changeModeState(new ResizeMode()));
     
     JMenu shapeMenu = new JMenu("Shapes");
     createMenuItem(shapeMenu,"Circle", e -> shapeContainer.shapeMode(ShapeMode.CIRCLE));

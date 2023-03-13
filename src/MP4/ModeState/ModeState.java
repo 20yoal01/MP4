@@ -1,12 +1,16 @@
 package MP4.ModeState;
 
-import static MP4.ShapeContainer.Mode;
+public class ModeState {
+    ModeInterface currentState;
 
-public interface ModeState {
-    //All the modes
-    void execute();
-    void insert();
-    void move();
-    void delete();
+    public ModeState() {
+        this.currentState = new InsertMode();
+    }
+    public void setMode(ModeInterface mode){
+        this.currentState = mode;
+    }
+    public void drawShape(){
+        this.currentState.execute();
+    }
 
 }
