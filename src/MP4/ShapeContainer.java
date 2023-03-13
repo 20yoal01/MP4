@@ -7,144 +7,117 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-public class ShapeContainer extends JPanel implements Pointable
-  {
-  private static final long serialVersionUID = 1L;
-  private List<Shape>       shapes           = new LinkedList<Shape>();
+public class ShapeContainer extends JPanel implements Pointable {
+    private static final long serialVersionUID = 1L;
+    private List<Shape> shapes = new LinkedList<Shape>();
 
-  public enum ShapeMode
-    {
-	CIRCLE, RECTANGLE;
-    }
-  
-  public enum Mode
-    {
-    INSERT, MOVE, DELETE, MARK, UNMARK, RESIZE
-    };
-
-  private Mode  mode = Mode.INSERT;
-  private ShapeMode shapeMode = ShapeMode.CIRCLE;
-  private Shape selected;
-  
-  public ShapeContainer()
-    {
-    super();
-    MouseHandler mouseHandler = new MouseHandler(this);
-    this.addMouseListener(mouseHandler);
-    this.addMouseMotionListener(mouseHandler);
-    this.setBackground(Color.white);
-    }
-  
-  
-  
-  public void addShape(Shape shape)
-    {
-    shapes.add(shape);
+    public enum ShapeMode {
+        CIRCLE, RECTANGLE;
     }
 
-  public void paintComponent(Graphics g) // anropas av Swing när det är dags att
-                                         // rendera
-    {
-    super.paintComponent(g);
+    public enum Mode {
+        INSERT, MOVE, DELETE, MARK, UNMARK, RESIZE
+    }
 
-    for (Shape shape : shapes)
-      shape.draw(g);
+    ;
+
+    private Mode mode = Mode.INSERT;
+    private ShapeMode shapeMode = ShapeMode.CIRCLE;
+    private Shape selected;
+
+    public ShapeContainer() {
+        super();
+        MouseHandler mouseHandler = new MouseHandler(this);
+        this.addMouseListener(mouseHandler);
+        this.addMouseMotionListener(mouseHandler);
+        this.setBackground(Color.white);
+    }
+
+
+    public void addShape(Shape shape) {
+        shapes.add(shape);
+    }
+
+    public void paintComponent(Graphics g) // anropas av Swing när det är dags att
+    // rendera
+    {
+        super.paintComponent(g);
+
+        for (Shape shape : shapes)
+            shape.draw(g);
 
     }
 
-  
-  
-  private void select(Point point)
-    {
-    for (Shape shape : shapes)
-      {
-      if (shape.intersects(point))
-        {
-        selected = shape;
-        return;
+
+    private void select(Point point) {
+        for (Shape shape : shapes) {
+            if (shape.intersects(point)) {
+                selected = shape;
+                return;
+            }
         }
-      }
     }
 
-  public void shapeMode(ShapeMode shapeMode) {
-	  this.shapeMode = shapeMode;
-  }
-  
-  public void pointerDown(Point point)
-    {
-    if (mode == Mode.INSERT)
-      {
-    	switch(shapeMode) {
-    		case CIRCLE:
-    			shapes.add(new Circle(point, Math.random() * 50.0));
-    			break;    		case RECTANGLE:
-    			shapes.add(new Rectangle(point, 40, 60));
-    			break;
-    	}
-    	repaint(); // uppmanar swing att måla om
-      }
-    else if (mode == Mode.MOVE)
-      select(point);
-    else if (mode == Mode.DELETE)
-      {
-      select(point);
-      if (selected != null)
-        shapes.remove(selected);
-      selected = null;
-      repaint(); // uppmanar swing att måla om
-      }
-    else if (mode == Mode.MARK)
-      {
-      select(point);
-      if(selected != null)
-        {
-        Shape markedShape = new ShapeDecorator(selected);
-        shapes.remove(selected);
-        shapes.add(markedShape);
-        repaint();
+    public void shapeMode(ShapeMode shapeMode) {
+        this.shapeMode = shapeMode;
+    }
+
+    public void pointerDown(Point point) {
+        if (mode == Mode.INSERT) {
+            switch (shapeMode) {
+                case CIRCLE -> shapes.add(new Circle(point, Math.random() * 50.0));
+                case RECTANGLE -> shapes.add(new Rectangle(point, 40, 60));
+            }
+            repaint(); // uppmanar swing att måla om
+        } else if (mode == Mode.MOVE)
+            select(point);
+        else if (mode == Mode.DELETE) {
+            select(point);
+            if (selected != null)
+                shapes.remove(selected);
+            selected = null;
+            repaint(); // uppmanar swing att måla om
+        } else if (mode == Mode.MARK) {
+            select(point);
+            if (selected != null) {
+                Shape markedShape = new ShapeDecorator(selected);
+                shapes.remove(selected);
+                shapes.add(markedShape);
+                repaint();
+            }
+        } else if (mode == Mode.UNMARK) {
+            select(point);
+            if (selected != null) {
+                Shape unmarkedShape = selected.peel();
+                shapes.remove(selected);
+                shapes.add(unmarkedShape);
+                repaint();
+            }
+        } else if (mode == Mode.RESIZE) {
+            select(point);
         }
-      }
-    else if (mode == Mode.UNMARK)
-      {
-      select(point);
-      if(selected != null)
-        {
-        Shape unmarkedShape = selected.peel();
-        shapes.remove(selected);
-        shapes.add(unmarkedShape);
-        repaint();
+    }
+    public void testPointerDown(Point point){
+
+    }
+
+    public void pointerUp(Point point) {
+        selected = null;
+    }
+
+    public void pointerMoved(Point point, boolean pointerDown) {
+        if (selected != null && pointerDown) {
+            if (mode == Mode.MOVE) {
+                selected.moveTo(point);
+                repaint(); // uppmanar swing att måla om
+            } else if (mode == Mode.RESIZE) {
+                selected.resizeTo(point);
+                repaint();
+            }
         }
-      }
-    else if (mode == Mode.RESIZE)
-      {
-      select(point);
-      }
     }
 
-  public void pointerUp(Point point)
-    {
-    selected = null;
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
-
-  public void pointerMoved(Point point, boolean pointerDown)
-    {
-    if (selected != null && pointerDown)
-      {
-      if (mode == Mode.MOVE)
-        {
-        selected.moveTo(point);
-        repaint(); // uppmanar swing att måla om
-        }
-      else if(mode == Mode.RESIZE)
-        {
-        selected.resizeTo(point);
-        repaint();
-        }      
-      }
-    }
-
-  public void setMode(Mode mode)
-    {
-    this.mode = mode;
-    }
-  }
+}
