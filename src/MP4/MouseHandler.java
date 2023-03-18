@@ -24,7 +24,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
     public void mousePressed(MouseEvent e) {
         /*pointable.pointerDown(new Point(e.getX(), e.getY()));*/
-        pointable.pointerDownTest(new Point(e.getX(), e.getY()));
+        pointable.pointerDown(new Point(e.getX(), e.getY()));
     }
 
     public void mouseReleased(MouseEvent e) {

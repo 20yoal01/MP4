@@ -56,17 +56,17 @@ public class Circle implements Shape
 
   @Override
   public void move(double dx, double dy)
-    {
+  {
     center.move(dx, dy);
-    }
-  
-  @Override
-  public void resizeTo(Point point)
+  }
+
+    @Override
+    public void resizeTo(Point point)
     {
-    r = center.distanceTo(point);
+      r = center.distanceTo(point);
     }
 
-  @Override
+    @Override
   public Shape peel()
     {
     return this;

@@ -15,7 +15,7 @@ public class Rectangle implements Shape{
 	
 	@Override
 	public void draw(Graphics g) {
-		g.drawRect((int) coordinates.getX(),(int) coordinates.getY(), (int) width, (int) height);
+		g.drawRect((int) ((int) coordinates.getX() - (width / 2)), (int) ((int) coordinates.getY() - (height / 2)), (int) width, (int) height);
 	}
 
 	@Override
@@ -35,8 +35,12 @@ public class Rectangle implements Shape{
 
 	@Override
 	public boolean intersects(Point point) {
-		return coordinates.distanceTo(point) < height
-			|| coordinates.distanceTo(point) < width;
+		double x1 = coordinates.getX() - (width / 2);
+		double x2 = coordinates.getX() + (width / 2);
+		double y1 = coordinates.getY() - (height / 2);
+		double y2 = coordinates.getY() + (height / 2);
+
+		return point.getX() >= x1 && point.getX() <= x2 && point.getY() >= y1 && point.getY() <= y2;
 	}
 
 	@Override

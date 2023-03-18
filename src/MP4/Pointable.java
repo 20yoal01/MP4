@@ -6,6 +6,4 @@ public interface Pointable {
     public void pointerUp(Point point);
 
     public void pointerMoved(Point point, boolean pointerDown);
-
-    void pointerDownTest(Point point);
 }
